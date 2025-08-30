@@ -1,23 +1,21 @@
-const express = require("express"); // importing express
+const express = require("express")
 
-const app = express(); // creating an application / Server
+const app = express();
 
-// We should handle the incoming request
-// for that we should create a request handlers
+// use -> Accept all the request (GET, POST, DELETE, PATCH, etc..)
+app.use("/user", (req,res,next) => {
+    console.log("Inside Route Handler");
+    // res.send("Route Handler 1");
+    next();
+},
+(req,res) => {
+    res.send("Route Handler 2");
+}
+)
 
-// app.use((req,res) => {
-//     res.send("Hello from the server!"); // Whatever request came we response only tihs
-// }) // Request handlers
+//To specify a method you can specify it instead of use
 
-// To handle routes
-app.use("/test",(req,res) => {
-    res.send("Hello from the server!"); // Whatever request came we response only tihs
-}) // Request handlers
-
-
-app.listen(3000, () => {
-    console.log("Server is succeessfully listening on port 3000...");
+app.listen(7777, () => {
+    console.log("Server is Successfully running on the port 7777");
     
-}); // This listen the incoming request from the port 3000;
-
-
+})
