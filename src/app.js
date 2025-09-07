@@ -48,6 +48,16 @@ app.post("/admin/login", (req, res) => {
 
 app.use("/admin", adminAuth);
 
+app.use("/getUserData", (req,res) => {
+    try {
+        // if logic failed
+        throw new error("befdsjfedskfdj") // mimicking a error
+        res.send("user Data Send")
+    } catch (err) {
+        res.status(500).send("Something Went Wrong")
+    }
+})
+
 
 app.use("/admin/getAllData", (req, res) => {
     res.send("Recieved All Data")
@@ -59,6 +69,12 @@ app.use("/admin/deleteData", (req, res) => {
 
 app.use("/user", (req, res) => {
     res.send("User data send");
+})
+
+app.use("/", (err, req, res, next) => {
+    if (err) {
+        res.status(500).send("Something Went Wrong")
+    }
 })
 
 app.listen(7777, () => {
