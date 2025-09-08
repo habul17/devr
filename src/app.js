@@ -1,19 +1,16 @@
 const express = require("express");
-
 const app = express();
-
 const User = require("./models/user")
-
 const connectDb = require("./config/database");
+
+app.use(express.json());
+
 
 
 app.post("/signup", async (req,res) => {
-    const user = new User({
-        firstName : "Abul",
-        lastName : "Hassan",
-        emailId : "abul@gmail.com",
-        password : "abul@123",
-    })
+    
+
+    const user = new User(req.body);
 
     try {
         await user.save();
@@ -24,6 +21,17 @@ app.post("/signup", async (req,res) => {
 
 })
 
+app.get("/user", async (req, res) => {
+    const userEmail = req.body.emailId;
+
+    try {
+        const user = await User.find({ emailId: userEmail });
+        res.send(user)
+    } catch (err) {
+        req.status(400).send("Something went wrong");
+    }
+
+})
 
 
 connectDb()
