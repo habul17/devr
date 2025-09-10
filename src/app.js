@@ -6,10 +6,10 @@ const connectDb = require("./config/database");
 app.use(express.json());
 
 
+// Signup or save the user to db
 
 app.post("/signup", async (req,res) => {
     
-
     const user = new User(req.body);
 
     try {
@@ -20,6 +20,8 @@ app.post("/signup", async (req,res) => {
     }
 
 })
+
+// find user by email id
 
 app.get("/user", async (req, res) => {
     const userEmail = req.body.emailId;
@@ -32,6 +34,8 @@ app.get("/user", async (req, res) => {
     }
 
 })
+
+// feed - to get all the user in the db
 
 app.get("/feed" , async (req,res) => {
     
@@ -46,6 +50,19 @@ app.get("/feed" , async (req,res) => {
         req.status(400).send("Something went wrong")
     }
 
+})
+
+// delete - delete the user from db from emailId
+
+app.delete("/user", async (req,res) => {
+    const userId = req.body.userId;
+
+    try {
+        const deleteUser = await User.findByIdAndDelete(userId);
+        res.send("Deleted User");
+    }catch (err) {
+        res.status(400).send("Something Went Wrong")
+    }
 })
 
 
