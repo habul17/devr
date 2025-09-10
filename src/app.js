@@ -33,6 +33,21 @@ app.get("/user", async (req, res) => {
 
 })
 
+app.get("/feed" , async (req,res) => {
+    
+    try {
+        const users = await User.find({});
+        if(!users) {
+            res.status(400).send("Something went wrong")
+        } else {
+            res.send(users) ;
+        }
+    } catch (err) {
+        req.status(400).send("Something went wrong")
+    }
+
+})
+
 
 connectDb()
     .then(() => {
