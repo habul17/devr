@@ -8,8 +8,8 @@ app.use(express.json());
 
 // Signup or save the user to db
 
-app.post("/signup", async (req,res) => {
-    
+app.post("/signup", async (req, res) => {
+
     const user = new User(req.body);
 
     try {
@@ -37,14 +37,14 @@ app.get("/user", async (req, res) => {
 
 // feed - to get all the user in the db
 
-app.get("/feed" , async (req,res) => {
-    
+app.get("/feed", async (req, res) => {
+
     try {
         const users = await User.find({});
-        if(!users) {
+        if (!users) {
             res.status(400).send("Something went wrong")
         } else {
-            res.send(users) ;
+            res.send(users);
         }
     } catch (err) {
         req.status(400).send("Something went wrong")
@@ -54,14 +54,28 @@ app.get("/feed" , async (req,res) => {
 
 // delete - delete the user from db from emailId
 
-app.delete("/user", async (req,res) => {
+app.delete("/user", async (req, res) => {
     const userId = req.body.userId;
 
     try {
         const deleteUser = await User.findByIdAndDelete(userId);
         res.send("Deleted User");
-    }catch (err) {
+    } catch (err) {
         res.status(400).send("Something Went Wrong")
+    }
+})
+
+// update the user
+
+app.patch("/user", async (req, res) => {
+    const userId = req.body.userId;
+    const data = req.body;
+    try {
+        const user = await User.findByIdAndUpdate(userId, data, { returnDocument: "after" });
+        console.log(user);
+        res.send("User updated successfully")
+    } catch (err) {
+        res.status(400).send("Something went wrong");
     }
 })
 
